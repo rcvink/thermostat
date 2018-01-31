@@ -36,4 +36,17 @@ describe('Thermostat', function() {
       expect(function() {thermostat.down(11)}).toThrowError('Cannot decrease temperature below 10 degrees');
     });
   });
+
+  describe('setPowerSave', function() {
+    it('changes power save mode to off', function () {
+      thermostat.setPowerSave()
+      expect(thermostat.isPowerSaving()).toEqual(false)
+    });
+
+    it('changes power save mode to on', function () {
+      thermostat.setPowerSave()
+      thermostat.setPowerSave()
+      expect(thermostat.isPowerSaving()).toEqual(true)
+    });
+  });
 });
