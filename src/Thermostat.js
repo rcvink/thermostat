@@ -15,11 +15,15 @@ Thermostat.prototype.isPowerSaving = function() {
 };
 
 Thermostat.prototype.up = function(temperatureIncrease) {
-  this._temperature += temperatureIncrease;
+  if (this.isPowerSaving() && (this._temperature + temperatureIncrease) > 25) {
+    throw Error('Cannot increase temperature above 25 degrees')
+  } else {
+    this._temperature += temperatureIncrease;
+  }
 };
 
 Thermostat.prototype.down = function(temperatureDecrease) {
-  if (this._temperature - temperatureDecrease < MIN_TEMPERATURE) {
+  if (this._temperature - temperatureDecrease <= MIN_TEMPERATURE) {
     throw Error('Cannot decrease temperature below 10 degrees');
   };
   this._temperature -= temperatureDecrease;

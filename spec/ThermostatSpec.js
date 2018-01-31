@@ -20,6 +20,10 @@ describe('Thermostat', function() {
       thermostat.up(5);
       expect(thermostat.temperature()).toEqual(25);
     });
+
+    it('cannot increase past 25 degrees in power save mode', function() {
+      expect(function() {thermostat.up(6)}).toThrowError('Cannot increase temperature above 25 degrees');
+    });
   });
 
   describe('down', function() {
