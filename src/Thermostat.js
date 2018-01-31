@@ -1,3 +1,5 @@
+'use strict';
+
 function Thermostat() {
   this._temperature = 20;
   this._minimumTemperature = 10;
@@ -7,6 +9,8 @@ function Thermostat() {
 const MIN_TEMPERATURE = 10;
 const NON_POWER_SAVING_MAX = 32;
 const POWER_SAVING_MAX = 25;
+const LOW_USAGE_THRESHOLD = 18;
+const MEDIUM_USAGE_THRESHOLD = 25;
 
 Thermostat.prototype.temperature = function() {
   return this._temperature;
@@ -38,6 +42,17 @@ Thermostat.prototype.setPowerSave = function () {
 
 Thermostat.prototype.reset = function () {
   this._temperature = 20;
+};
+
+Thermostat.prototype.currentUsage = function () {
+  let temperature = this.temperature()
+  if (temperature < LOW_USAGE_THRESHOLD) {
+    return 'low-usage';
+  } else if (temperature < MEDIUM_USAGE_THRESHOLD) {
+    return 'medium-usage';
+  } else {
+    return 'high-usage';
+  }
 };
 
 Thermostat.prototype._maximumTemperature = function () {

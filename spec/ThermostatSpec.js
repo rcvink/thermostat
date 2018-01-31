@@ -61,4 +61,21 @@ describe('Thermostat', function() {
       expect(thermostat.temperature()).toEqual(20)
     });
   });
+
+  describe('currentUsage', function() {
+    it('returns low-usage for temperatures <18', function () {
+      thermostat.down(5)
+      expect(thermostat.currentUsage()).toEqual('low-usage')
+    });
+
+    it('returns medium-usage for temperatures 18 < x < 25', function () {
+      expect(thermostat.currentUsage()).toEqual('medium-usage')
+    });
+
+    it('returns high-usage for temperatures >25', function () {
+      thermostat.setPowerSave()
+      thermostat.up(6)
+      expect(thermostat.currentUsage()).toEqual('high-usage')
+    });
+  });
 });
