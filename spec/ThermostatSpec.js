@@ -5,8 +5,14 @@ describe('Thermostat', function() {
     thermostat = new Thermostat();
   });
 
-  it('is at 20 degrees initially', function() {
-    expect(thermostat.temperature()).toEqual(20);
+  describe('Initially', function () {
+    it('is at 20 degrees initially', function() {
+      expect(thermostat.temperature()).toEqual(20);
+    });
+
+    it('is in power saving mode', function() {
+      expect(thermostat.isPowerSaving()).toEqual(true);
+    });
   });
 
   describe('up', function() {
