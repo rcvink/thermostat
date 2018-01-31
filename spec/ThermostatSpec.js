@@ -7,7 +7,7 @@ describe('Thermostat', function() {
 
   describe('Initially', function () {
     it('is at 20 degrees initially', function() {
-      expect(thermostat.temperature()).toEqual(20);
+      expect(thermostat.temperature()).toEqual(STARTING_TEMP);
     });
 
     it('is in power saving mode', function() {

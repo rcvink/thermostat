@@ -1,11 +1,12 @@
 'use strict';
 
 function Thermostat() {
-  this._temperature = 20;
-  this._minimumTemperature = 10;
+  this._temperature = STARTING_TEMP;
+  this._minimumTemperature = MIN_TEMPERATURE;
   this._powerSaveMode = true;
 };
 
+const STARTING_TEMP = 20;
 const MIN_TEMPERATURE = 10;
 const NON_POWER_SAVING_MAX = 32;
 const POWER_SAVING_MAX = 25;
