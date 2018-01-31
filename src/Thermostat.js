@@ -5,6 +5,8 @@ function Thermostat() {
 };
 
 const MIN_TEMPERATURE = 10;
+const NON_POWER_SAVING_MAX = 32;
+const POWER_SAVING_MAX = 25;
 
 Thermostat.prototype.temperature = function() {
   return this._temperature;
@@ -15,8 +17,9 @@ Thermostat.prototype.isPowerSaving = function() {
 };
 
 Thermostat.prototype.up = function(temperatureIncrease) {
-  if (this.isPowerSaving() && (this._temperature + temperatureIncrease) > 25) {
-    throw Error('Cannot increase temperature above 25 degrees')
+  let maxTemp = this._maximumTemperature();
+  if ((this._temperature + temperatureIncrease) > maxTemp) {
+    throw Error(`Cannot increase temperature above ${maxTemp} degrees`);
   } else {
     this._temperature += temperatureIncrease;
   }
@@ -31,4 +34,8 @@ Thermostat.prototype.down = function(temperatureDecrease) {
 
 Thermostat.prototype.setPowerSave = function () {
   this._powerSaveMode = !this._powerSaveMode
+};
+
+Thermostat.prototype._maximumTemperature = function () {
+  return this.isPowerSaving() ? POWER_SAVING_MAX : NON_POWER_SAVING_MAX;
 };
