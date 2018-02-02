@@ -5,8 +5,8 @@ describe('Thermostat', function() {
     thermostat = new Thermostat();
   });
 
-  describe('Initially', function () {
-    it('is at 20 degrees initially', function() {
+  describe('initially', function () {
+    it('is at 20 degrees', function() {
       expect(thermostat.temperature()).toEqual(STARTING_TEMP);
     });
 
@@ -21,12 +21,12 @@ describe('Thermostat', function() {
       expect(thermostat.temperature()).toEqual(21);
     });
 
-    it('cannot increase past 25 degrees in power save mode', function() {
+    it('does not increase beyond 25 degrees in power save mode', function() {
       var thermostat = new Thermostat(25);
       expect(function() {thermostat.up()}).toThrowError('Cannot increase temperature above 25 degrees');
     });
 
-    it('cannot increase past 32 degrees when power save mode off', function() {
+    it('does not increase beyond 32 degrees when power save mode off', function() {
       var thermostat = new Thermostat(32, false);
       expect(function() {thermostat.up()}).toThrowError('Cannot increase temperature above 32 degrees');
     });
@@ -44,16 +44,26 @@ describe('Thermostat', function() {
     });
   });
 
-  describe('setPowerSave', function() {
-    it('changes power save mode to off', function () {
-      thermostat.setPowerSave();
-      expect(thermostat.isPowerSaving()).toEqual(false);
+  describe('changePowerMode', function() {
+    describe('when mode is "on"', function() {
+      it('changes to off', function() {
+        thermostat.changePowerMode();
+        expect(thermostat.isPowerSaving()).toEqual(false);
+      });
+
+      it('reduces temperature to 25 if necessary', function() {
+        thermostat = new Thermostat(32, false);
+        thermostat.changePowerMode();
+        expect(thermostat.temperature()).toEqual(25);
+      });
     });
 
-    it('changes power save mode to on', function () {
-      thermostat = new Thermostat(20, false);
-      thermostat.setPowerSave();
-      expect(thermostat.isPowerSaving()).toEqual(true);
+    describe('when mode is "off"', function() {
+      it('changes to on', function() {
+        thermostat = new Thermostat(20, false);
+        thermostat.changePowerMode();
+        expect(thermostat.isPowerSaving()).toEqual(true);
+      });
     });
   });
 
@@ -62,6 +72,12 @@ describe('Thermostat', function() {
       thermostat = new Thermostat(21);
       thermostat.reset();
       expect(thermostat.temperature()).toEqual(20);
+    });
+
+    it('changes power save mode to "on"', function() {
+      thermostat = new Thermostat(20, false);
+      thermostat.reset();
+      expect(thermostat.isPowerSaving()).toEqual(true);
     });
   });
 
