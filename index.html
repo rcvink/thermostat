@@ -3,18 +3,64 @@
   <head>
     <meta charset="utf-8">
     <title>Thermostat</title>
+    <style>
+    </style>
   </head>
-  <body>
-    Temperature: 25<br>
-    Eco Mode: On<br>
-    Energy consumption: low usage<br><br>
 
-    <button type="button">+</button>
-    <button type="button">-</button>
-    <button type="button">Reset</button>
-    <button type="button">Eco</button>
+  <body>
+
+    <h1>Temperature:</h1>
+    <h1 id="temperature"></h1>
+    <h1>Eco Mode:</h1>
+    <h1 id="eco"></h1>
+    <h1>Energy consumption:</h1>
+    <h1 id="consumption"></h1>
+
+    <button id="increase" type="button">+</button>
+    <button id="decrease" type="button">-</button>
+    <button id="reset" type="button">Reset</button>
+    <button id="eco-mode" type="button">Eco mode</button>
 
     <script src="./src/Thermostat.js"></script>
     <script src="./jquery-3.3.1.js"></script>
+
+    <script>
+
+    $(document).ready(function() {
+      var thermostat = new Thermostat();
+      $('#temperature').text(thermostat.temperature());
+      $('#eco').text(thermostat.isPowerSaving() ? "On" : "Off");
+      $('#consumption').text(thermostat.currentUsage());
+
+      $('#increase').on('click', function() {
+        thermostat.up();
+        $('#temperature').text(thermostat.temperature());
+        $('#consumption').text(thermostat.currentUsage());
+      });
+
+      $('#decrease').on('click', function() {
+        thermostat.down();
+        $('#temperature').text(thermostat.temperature());
+        $('#consumption').text(thermostat.currentUsage());
+      });
+
+      $('#reset').on('click', function() {
+        thermostat.reset();
+        $('#temperature').text(thermostat.temperature());
+        $('#eco').text(thermostat.isPowerSaving() ? "On" : "Off");
+        $('#consumption').text(thermostat.currentUsage());
+      });
+
+      $('#eco-mode').on('click', function() {
+        thermostat.changePowerMode();
+        $('#eco').text(thermostat.isPowerSaving() ? "On" : "Off");
+        $('#consumption').text(thermostat.currentUsage());
+        $('#temperature').text(thermostat.temperature());
+      });
+    });
+
+    </script>
+
   </body>
+
 </html>
