@@ -10,17 +10,22 @@
 
   <body>
 
-    <h1>Temperature:</h1>
-    <h1 id="temperature"></h1>
-    <h1>Eco Mode:</h1>
-    <h1 id="eco"></h1>
-    <h1>Energy consumption:</h1>
-    <h1 id="consumption"></h1>
+    <h2>Temperature: <span id="temperature"></span></h2>
+    <h2>Eco mode: <span id="eco"></span></h2>
+    <h2>Energy consumption: <span id="consumption"></span></h2>
 
     <button id="increase" type="button">+</button>
     <button id="decrease" type="button">-</button>
     <button id="reset" type="button">Reset</button>
     <button id="eco-mode" type="button">Eco mode</button>
+
+    <h3>Current temperature in <select id="current-city">
+      <option value="london">London</option>
+      <option value="new york">New York</option>
+      <option value="paris">Paris</option>
+      <option value="tokyo">Tokyo</option>
+    </select>
+       is: <span id="outside-temp"></span></h3>
 
     <script src="./src/Thermostat.js"></script>
     <script src="./jquery-3.3.1.js"></script>
@@ -30,6 +35,7 @@
     $(document).ready(function() {
       var thermostat = new Thermostat();
       updateAllVariables();
+      _updateOutsideTemp('london');
 
       $('#increase').on('click', function() {
         thermostat.up();
@@ -51,6 +57,11 @@
         updateAllVariables();
       });
 
+      $('#current-city').change(function() {
+        var city = $('#current-city').val();
+        _updateOutsideTemp(city);
+      });
+
       function updateAllVariables() {
         _updateTemperature();
         _updateMode();
@@ -69,6 +80,16 @@
       function _updateConsumption() {
         $('#consumption').text(thermostat.currentUsage());
       };
+
+      function _updateOutsideTemp(city) {
+        var url = 'http://api.openweathermap.org/data/2.5/weather?q=' + city
+        var token = '&appid=7c46b9d46905a124ae5408157903f295&'
+        var units = '&units=metric'
+        $.get(url + token + units, function(data) {
+          $('#outside-temp').text(data.main.temp);
+        });
+      };
+
     });
 
     </script>
